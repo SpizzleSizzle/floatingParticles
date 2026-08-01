@@ -16,13 +16,22 @@
   </head>
   <body>
     <div class="speed-control">
-      <label for="speedSlider">Particle speed</label>
+      <label for="speedSlider">Particle Speed</label>
       <input
         type="range"
         id="speedSlider"
         min="0.5"
         max="5"
         step="0.1"
+        value="1"
+      />
+      <label for="amountSlider">Particle Amount</label>
+      <input
+        type="range"
+        id="amountSlider"
+        min="0"
+        max="1000"
+        step="50"
         value="1"
       />
 
@@ -33,9 +42,9 @@
         <span class="slider round"></span>
       </label>
     </div>
-
-    <canvas id="particleCanvas"></canvas>
-
-    <script src="main.js"></script>
+    <div class="canvas-container">
+      <canvas id="particleCanvas"></canvas>
+    </div>
+    <script type="module" src="main.js"></script>
   </body>
 </html>

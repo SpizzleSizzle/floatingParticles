@@ -3,6 +3,7 @@
 const canvas = document.getElementById("particleCanvas");
 const ctx = canvas.getContext("2d");
 const speedSlider = document.getElementById("speedSlider");
+const amountSlider = document.getElementById("amountSlider");
 const attractToggle = document.getElementById("attractToggle");
 
 const config = {
@@ -37,6 +38,10 @@ function resizeCanvas() {
   const { innerWidth: w, innerHeight: h } = window;
   canvas.width = Math.round(w * dpr);
   canvas.height = Math.round(h * dpr);
+
+  canvas.style.width = w + "px";
+  canvas.style.height = h + "px";
+
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.scale(dpr, dpr);
 }
@@ -95,11 +100,15 @@ class Particle {
     this.x += this.vx * speedMultiplier;
     this.y += this.vy * speedMultiplier;
 
+    // 使用逻辑边界（window.innerWidth/Height）进行判断，而不是物理边界（canvas.width/Height）
+    const logicWidth = window.innerWidth;
+    const logicHeight = window.innerHeight;
+
     // Wrap slightly offscreen to avoid abrupt edges
-    if (this.x < -40) this.x = canvas.width + 40;
-    if (this.x > canvas.width + 40) this.x = -40;
-    if (this.y < -40) this.y = canvas.height + 40;
-    if (this.y > canvas.height + 40) this.y = -40;
+    if (this.x < -40) this.x = logicWidth + 40;
+    if (this.x > logicWidth + 40) this.x = -40;
+    if (this.y < -40) this.y = logicHeight + 40;
+    if (this.y > logicHeight + 40) this.y = -40;
   }
 
   draw() {
@@ -122,8 +131,21 @@ function seedParticles() {
   }
 }
 
+function updateParticleAmount() {
+  const currentAmount = particles.length;
+  const targetAmount = config.count;
+  let diff = targetAmount - currentAmount;
+  if (diff > 0) {
+    for (let i = 0; i < diff; i++) {
+      particles.push(new Particle());
+    }
+  } else {
+    particles.length = targetAmount;
+  }
+}
+
 function animate() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
   particles.forEach((particle) => {
     particle.update();
     particle.draw();
@@ -154,6 +176,11 @@ canvas.addEventListener("mouseleave", () => {
 
 speedSlider.addEventListener("input", (event) => {
   speedMultiplier = parseFloat(event.target.value);
+});
+
+amountSlider.addEventListener("input", (event) => {
+  config.count = parseInt(event.target.value, 10);
+  updateParticleAmount();
 });
 
 seedParticles();

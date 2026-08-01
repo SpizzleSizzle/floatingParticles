@@ -19,6 +19,9 @@ body {
     #050009 100%
   );
   overflow: hidden;
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
 }
 
 #particleCanvas {
@@ -27,7 +30,15 @@ body {
   width: 100vw;
   height: 100vh;
   display: block;
+  position: absolute;
 }
+
+/* .canvas-container {
+  border: 2px solid #e0ffe7;
+  width: 50vw;
+  height: 50vh;
+  position: relative;
+} */
 
 .speed-control {
   position: fixed;
@@ -95,7 +106,7 @@ body {
   position: absolute;
   height: 24px;
   width: 24px;
-  background-color: rgb(70, 255, 143);
+  background-color: #46ff8f;
 
   transition: 0.3s;
   top: 50%;
