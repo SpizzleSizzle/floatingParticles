@@ -185,3 +185,4 @@ amountSlider.addEventListener("input", (event) => {
 
 seedParticles();
 animate();
+///
